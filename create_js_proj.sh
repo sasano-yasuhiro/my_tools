@@ -1,13 +1,13 @@
 #!/usr/bin/bash
 entry_file="app.js"
 output_dir="public"
-function create_webpack_config(){
+create_webpack_config(){
 if test $1 = dev; then
   mode="development"
 elif test $1 = release; then
   mode="production"
 else
-  exit
+  exit 1
 fi
 echo "module.exports = {
   // ビルド情報の設定
@@ -28,7 +28,30 @@ create_entry_file(){
 echo "console.log('Hello World!!!!');
 " > $entry_file
 }
+insert_package_json(){
+# package.jsonに以下を追加
+#    "start": "webpack -w --config webpack.config.dev.js",
+#    "build": "webpack --config webpack.config.release.js",
+IFS_BACKUP=$IFS
+IFS=$'\n'
+while read -r LINE
+do
+  echo $LINE
+  if [ "`echo $LINE | grep 'scripts'`" ]; then
+    echo '    "start": "webpack -w --config webpack.config.dev.js",'
+    echo '    "build": "webpack --config webpack.config.release.js",'
+  fi
+done < package.json > package.json.new
+mv package.json package.json.old
+mv package.json.new package.json
+IFS=$IFS_BACKUP
+}
+
 # メイン処理
+if [ $# -ne 1 ]; then
+  echo "$0 project-name" 1>&2
+  exit 1
+fi
 mkdir ${1}
 cd ${1}
 npm init -y
@@ -43,9 +66,7 @@ create_entry_file
 #touch $entry_file 
 cd ..
 # 後処理
-# package.jsonに以下を追加
-#    "start": "webpack -w --config webpack.config.dev.js",
-#    "build": "webpack --config webpack.config.release.js",
+insert_package_json
 ls -l
 cd ..
 
