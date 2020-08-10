@@ -1,6 +1,8 @@
 #!/usr/bin/bash
 entry_file="app.js"
 output_dir="public"
+
+# webpack.config.*.jsの作成
 create_webpack_config(){
 if test $1 = dev; then
   mode="development"
@@ -24,16 +26,21 @@ echo "module.exports = {
   },
 };" > webpack.config.$1.js 
 }
+
+# エントリーファイルの作成
 create_entry_file(){
 echo "console.log('Hello World!!!!');
 " > $entry_file
 }
-insert_package_json(){
+
 # package.jsonに以下を追加
+insert_package_json(){
 #    "start": "webpack -w --config webpack.config.dev.js",
 #    "build": "webpack --config webpack.config.release.js",
+# 区切り文字を改行のみにする
 IFS_BACKUP=$IFS
 IFS=$'\n'
+# ファイルの読み込み
 while read -r LINE
 do
   echo $LINE
@@ -42,8 +49,10 @@ do
     echo '    "build": "webpack --config webpack.config.release.js",'
   fi
 done < package.json > package.json.new
+# ファイルの置き換え
 mv package.json package.json.old
 mv package.json.new package.json
+# 区切り文字を元に戻す
 IFS=$IFS_BACKUP
 }
 
