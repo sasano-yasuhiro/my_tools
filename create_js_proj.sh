@@ -36,7 +36,7 @@ echo "console.log('Hello World!!!!');
 
 insert_babel_env(){
   echo '  "babel": {'
-  echo '    "presets": ["@babel/preset-env"]'
+  echo '  "presets": [["@babel/preset-env", {"targets": ["defaults"]}]]'
   echo '  },'
 }
 
