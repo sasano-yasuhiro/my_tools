@@ -34,6 +34,12 @@ echo "console.log('Hello World!!!!');
 " > $entry_file
 }
 
+insert_babel_env(){
+  echo '  "babel": {'
+  echo '    "presets": ["@babel/preset-env"]'
+  echo '  },'
+}
+
 # package.jsonに以下を追加
 insert_package_json(){
 #    "start": "webpack -w --config webpack.config.dev.js",
@@ -48,6 +54,8 @@ do
   if [ "`echo $LINE | grep 'scripts'`" ]; then
     echo '    "start": "webpack -w --config webpack.config.dev.js",'
     echo '    "build": "webpack --config webpack.config.release.js",'
+  elif [ "`echo $LINE | grep 'license'`" ]; then
+    insert_babel_env
   fi
 done < package.json > package.json.new
 # ファイルの置き換え
@@ -83,6 +91,7 @@ mkdir ${1}
 cd ${1}
 npm init -y
 npm install webpack webpack-cli --save-dev
+npm install @babel/core @babel/cli @babel/preset-env --save-dev
 # 初期ファイルの配置
 create_webpack_config dev
 create_webpack_config release
