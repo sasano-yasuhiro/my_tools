@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 entry_file="app.js"
 output_dir="public"
+output_file="bundle.js"
 
 # webpack.config.*.jsの作成
 create_webpack_config(){
@@ -18,7 +19,7 @@ echo "module.exports = {
   entry: './src/$entry_file', // エントリーファイル 
   output: {
     path: __dirname + '/$output_dir', // 出力ディレクトリ
-    filename: 'sample.js' // 出力ファイル
+    filename: '$output_file' // 出力ファイル
   },
   // 自動更新の設定
   watchOptions: {
@@ -56,6 +57,23 @@ mv package.json.new package.json
 IFS=$IFS_BACKUP
 }
 
+create_index(){
+echo "<html>
+<head>
+<meta charset='UTF-8'>
+<link rel='stylesheet' href='index.css'>
+</head>
+<body>
+<script src='$output_file'></script>
+</body>
+</html>
+" > $output_dir/index.html
+echo "@charset 'utf-8';
+body {
+background-color:#cccccc;
+}" > $output_dir/index.css
+}
+
 # メイン処理
 if [ $# -ne 1 ]; then
   echo "$0 project-name" 1>&2
@@ -76,6 +94,8 @@ create_entry_file
 cd ..
 # 後処理
 insert_package_json
+create_index
 ls -l
+ls -l public
 cd ..
 
