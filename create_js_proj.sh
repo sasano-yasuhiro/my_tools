@@ -74,12 +74,13 @@ IFS=$IFS_BACKUP
 }
 
 create_index(){
-echo "<html>
+echo "<html lang="ja">
 <head>
 <meta charset='UTF-8'>
 <link rel='stylesheet' href='index.css'>
 </head>
 <body>
+<div id="app"></div>
 <script src='$output_file'></script>
 </body>
 </html>
