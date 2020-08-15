@@ -25,12 +25,27 @@ echo "module.exports = {
   watchOptions: {
     ignored: /node_modules/
   },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      }
+    ]
+  },
 };" > webpack.config.$1.js 
 }
 
 # エントリーファイルの作成
 create_entry_file(){
 echo "console.log('Hello World!!!!');
+document.write('Hello World!!!!');
 " > $entry_file
 }
 
@@ -92,6 +107,7 @@ cd ${1}
 npm init -y
 npm install webpack webpack-cli --save-dev
 npm install @babel/core @babel/cli @babel/preset-env --save-dev
+npm install babel-loader --save-dev
 # 初期ファイルの配置
 create_webpack_config dev
 create_webpack_config release
