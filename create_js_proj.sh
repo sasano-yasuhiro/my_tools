@@ -76,6 +76,7 @@ done < package.json > package.json.new
 # ファイルの置き換え
 mv package.json package.json.old
 mv package.json.new package.json
+rm package.json.old
 # 区切り文字を元に戻す
 IFS=$IFS_BACKUP
 }
