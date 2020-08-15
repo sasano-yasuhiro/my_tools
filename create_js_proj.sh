@@ -5,16 +5,8 @@ output_file="bundle.js"
 
 # webpack.config.*.jsの作成
 create_webpack_config(){
-if test $1 = dev; then
-  mode="development"
-elif test $1 = release; then
-  mode="production"
-else
-  exit 1
-fi
 echo "module.exports = {
   // ビルド情報の設定
-  mode: '$mode', // ビルドモード(production,development)
   devtool: 'inline-source-map', // ソースマップ
   entry: './src/$entry_file', // エントリーファイル 
   output: {
@@ -39,7 +31,7 @@ echo "module.exports = {
       }
     ]
   },
-};" > webpack.config.$1.js 
+};" > webpack.config.js 
 }
 
 # エントリーファイルの作成
@@ -57,8 +49,8 @@ insert_babel_env(){
 
 # package.jsonに以下を追加
 insert_package_json(){
-#    "start": "webpack -w --config webpack.config.dev.js",
-#    "build": "webpack --config webpack.config.release.js",
+#    "start": "webpack -w --mode development ",
+#    "build": "webpack --mode production ",
 # 区切り文字を改行のみにする
 IFS_BACKUP=$IFS
 IFS=$'\n'
@@ -67,8 +59,8 @@ while read -r LINE
 do
   echo $LINE
   if [ "`echo $LINE | grep 'scripts'`" ]; then
-    echo '    "start": "webpack -w --config webpack.config.dev.js",'
-    echo '    "build": "webpack --config webpack.config.release.js",'
+    echo '    "start": "webpack -w --mode development ",'
+    echo '    "build": "webpack --mode production ",'
   elif [ "`echo $LINE | grep 'license'`" ]; then
     insert_babel_env
   fi
@@ -110,13 +102,11 @@ npm install webpack webpack-cli --save-dev
 npm install @babel/core @babel/cli @babel/preset-env --save-dev
 npm install babel-loader --save-dev
 # 初期ファイルの配置
-create_webpack_config dev
-create_webpack_config release
+create_webpack_config 
 mkdir src
 mkdir $output_dir # 出力先
 cd src
 create_entry_file 
-#touch $entry_file 
 cd ..
 # 後処理
 insert_package_json
