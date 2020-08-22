@@ -6,7 +6,6 @@ insert_react_module(){
   IFS_BACKUP=$IFS
   IFS=$'\n'
   # ファイルの読み込み
-  echo "insert_react_module"
   while read -r LINE
   do
     if [ "`echo $LINE | grep 'presets'`" ]; then
