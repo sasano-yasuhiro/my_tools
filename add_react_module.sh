@@ -37,8 +37,12 @@ ReactDOM.render(
 
 # メイン処理
 if [ $# -ne 2 ]; then
-  echo "$0 project-name entry_file" 1>&2
-  exit 1
+  if [ $# = 1 ]; then
+    entry_file="src/app.js"
+  else
+    echo "$0 project-name entry_file" 1>&2
+    exit 1
+  fi
 fi
 proj=${1}
 cd ${proj}
