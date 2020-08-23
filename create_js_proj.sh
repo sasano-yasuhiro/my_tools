@@ -28,7 +28,7 @@ echo "module.exports = {
             presets: ['@babel/preset-env']
           }
         }
-      }
+      },
     ]
   },
 };" > webpack.config.js 
