@@ -14,8 +14,8 @@ echo "      {
       },"
 }
 
-npm install style-loader css-loader sass-loader node-sass --save-dev
 cd ${1}
+npm install style-loader css-loader sass-loader node-sass --save-dev
 # 区切り文字を改行のみにする
 IFS_BACKUP=$IFS
 IFS=$'\n'
