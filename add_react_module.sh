@@ -31,7 +31,8 @@ console.log('Hello World!!!!');
 
 let element = undefined;
 ReactDOM.render(
-  document.getElementById(element,'app')
+  element,
+  document.getElementById('app')
 );" > $entry_file
 }
 
