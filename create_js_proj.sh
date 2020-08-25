@@ -17,6 +17,11 @@ echo "module.exports = {
   watchOptions: {
     ignored: /node_modules/
   },
+  // dev serverの設定
+  devServer: {
+    contentBase: __dirname + '/$output_dir',
+    port: 8000,
+  },
   module: {
     rules: [
       {
@@ -59,7 +64,7 @@ while read -r LINE
 do
   echo $LINE
   if [ "`echo $LINE | grep 'scripts'`" ]; then
-    echo '    "start": "webpack -w --mode development ",'
+    echo '    "start": "webpack-dev-server",'
     echo '    "build": "webpack --mode production ",'
   elif [ "`echo $LINE | grep 'license'`" ]; then
     insert_babel_env
@@ -99,7 +104,7 @@ fi
 mkdir ${1}
 cd ${1}
 npm init -y
-npm install webpack webpack-cli --save-dev
+npm install webpack webpack-cli webpack-dev-server --save-dev
 npm install @babel/core @babel/cli @babel/preset-env --save-dev
 npm install babel-loader --save-dev
 # 初期ファイルの配置
