@@ -64,7 +64,7 @@ while read -r LINE
 do
   echo $LINE
   if [ "`echo $LINE | grep 'scripts'`" ]; then
-    echo '    "start": "webpack-dev-server --silent",'
+    echo '    "start": "webpack serve -open --mode development",'
     echo '    "build": "webpack --mode production ",'
   elif [ "`echo $LINE | grep 'license'`" ]; then
     insert_babel_env
